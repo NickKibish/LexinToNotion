@@ -18,7 +18,7 @@ String.prototype.capitalize = function() {
 async function addItem(obj) {
     try {
         const response = await notionClient.pages.create(obj)
-        console.log(response)
+        // console.log(response)
         console.log("Success! Entry added.")
     } catch (error) {
         console.error(error.body)
@@ -26,7 +26,11 @@ async function addItem(obj) {
 }  
 
 export function addWord(multilineText) {
-    let word = parse(multilineText)
+    var word = parse(multilineText)
+    if (word === undefined) {
+        console.error("No word found.")
+        return 
+    }
     
     const object = notion.newObject(word.word.capitalize(), databaseId)
     .map( (object) => notion.setTranslations(object, word.translation) )

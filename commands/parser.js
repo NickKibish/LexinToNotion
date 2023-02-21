@@ -4,16 +4,29 @@ const FORM_SEPARATOR = "Bokmålbøyning"
 const EXAMPLE_SEPARATOR = "Bokmåleksempel"
 const COMPOSITION_SEPARATOR = "Bokmålsammensetning"
 const EXPRESSIONS_SEPARATOR = "Bokmålsuttrykk"
+const WORD_IDENTIFIER = "Bokmåloppslagsord"
 
 function findWord(multilineText) {
     var lines = multilineText.split("\n");
     // find first line that ends with "Ikon for å spille av talesyntese"
-    while (!lines[0].endsWith(ICON_SEPARATOR)) {
+    while (lines.length > 0 && lines[0] != WORD_IDENTIFIER) {
         lines.shift()
     }
-    const wordLine = lines.shift()
+
+    if (lines.length == 0) {
+        return undefined
+    }
+
+    if (lines[0] == WORD_IDENTIFIER) {
+        lines.shift()
+    }
+
+    var word = lines.shift()
+
     // remove icon separator
-    const word = wordLine.slice(0, -ICON_SEPARATOR.length).trim()
+    if (word.endsWith(ICON_SEPARATOR)) {
+        word = word.slice(0, -ICON_SEPARATOR.length).trim()
+    }
     // Transcription
     const transcription = lines.shift().trim()
     let languagePart = lines.shift().trim()
@@ -138,7 +151,10 @@ function findSection(separator, multilineText) {
     const examlpes = []
     while (lines.length > 3 && lines.shift() == b_sep) {
         
-        const b = lines.shift().slice(0, -ICON_SEPARATOR.length).trim()
+        var b = lines.shift()
+        if (b.endsWith(ICON_SEPARATOR)) {
+            b = b.slice(0, -ICON_SEPARATOR.length).trim()
+        }
         lines.shift()
         const e = lines.shift()
         
@@ -173,7 +189,11 @@ function findExpressions(obj, multilineText) {
 }
 
 export function parse(text) {
-    return findWord(text)
+    var word = findWord(text)
+    if (word == undefined) {
+        return undefined
+    }
+    return word 
         .map ( (word) => findForms(word, text) )
         .map ( (word) => findDefinition(word, text) )
         .map ( (word) => findExamples(word, text) )
