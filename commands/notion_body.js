@@ -40,6 +40,7 @@ export function setTranslations(object, translations) {
   }
   
   export function setForms(object, forms) {
+    if (forms === undefined) { return object }
     object.properties["🤲 Bøyning"] = {
       "rich_text": [
         {
@@ -172,6 +173,7 @@ export function setTranslations(object, translations) {
   }
   
   export function addBodyForms(object, forms) {
+    if (forms === undefined) { return object }
     const textObjects = forms.map( (item) => [createPlainText(item)] )
     const row = createTableRow(textObjects)
     object.children.push(createTable([row], forms.length))

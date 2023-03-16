@@ -3,7 +3,7 @@ const DEFINITION_SEPARATOR = "Bokmålforklaring"
 const FORM_SEPARATOR = "Bokmålbøyning"
 const EXAMPLE_SEPARATOR = "Bokmåleksempel"
 const COMPOSITION_SEPARATOR = "Bokmålsammensetning"
-const EXPRESSIONS_SEPARATOR = "Bokmålsuttrykk"
+const EXPRESSIONS_SEPARATOR = "Bokmåluttrykk"
 const WORD_IDENTIFIER = "Bokmåloppslagsord"
 
 function findWord(multilineText) {
